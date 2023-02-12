@@ -202,9 +202,15 @@ class WebServer {
           query_pairs = splitQuery(request.replace("multiply?", ""));
 
           // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
-
+          try {
+            Integer num1 = Integer.parseInt(query_pairs.get("num1"));
+            Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+          } catch(NumberFormatException e){
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Error: Invalid parameters, must provide two valid numbers.");
+          }
           // do math
           Integer result = num1 * num2;
 
@@ -216,6 +222,8 @@ class WebServer {
 
           // TODO: Include error handling here with a correct error code and
           // a response that makes sense
+
+          // error handling located in try/catch above lines 22-213
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API

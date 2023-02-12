@@ -239,14 +239,13 @@ class WebServer {
           String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
          
           JSONArray repos = new JSONArray(json);
-          StringBuilder repoData = new StringBuilder();
           for (int i = 0; i < repos.length(); i++) {
               JSONObject repo = repos.getJSONObject(i);
               String full_name = repo.getString("full_name");
               int id = repo.getInt("id");
               String owner_login = repo.getJSONObject("owner").getString("login");
               
-              repoData.append("Full Name: " + full_name + ", ID: " + id + ", Login: " + owner_login + "\n");
+              builder.append("Full Name: " + full_name + ", ID: " + id + ", Login: " + owner_login + "\n");
           }
 
           builder.append("HTTP/1.1 200 OK\n");
